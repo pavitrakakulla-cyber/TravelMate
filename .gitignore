@@ -1,0 +1,6 @@
+.env
+__pycache__/
+*.pyc
+Frontend/node_modules
+TravelMate_Frontend_Styled.zip
+TravelMate_Frontend_Styled

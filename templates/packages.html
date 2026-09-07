@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tour Packages</title>
+</head>
+<body>
+
+<h1>Available Tour Packages</h1>
+
+{% for package in packages %}
+
+<hr>
+
+<h2>{{ package["title"] }}</h2>
+
+<img
+src="{{ url_for('static', filename='images/' + package['image_url']) }}"
+width="250">
+
+<p><b>Destination:</b> {{ package["destination"] }}</p>
+
+<p>{{ package["description"] }}</p>
+
+<p>
+<b>Duration:</b>
+{{ package["duration_days"] }} Days /
+{{ package["duration_nights"] }} Nights
+</p>
+
+<h3>₹ {{ package["base_price"] }}</h3>
+
+
+<a href="/booking/{{ package['package_id'] }}"
+class="btn btn-primary w-100">
+    Book Now
+</a>
+{% endfor %}
+
+</body>
+</html>

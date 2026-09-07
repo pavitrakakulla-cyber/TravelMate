@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Bookings - TravelMate</title>
+</head>
+
+<body>
+
+    <h1>All Bookings</h1>
+
+    {% if bookings %}
+
+        {% for booking in bookings %}
+
+            <h2>
+                Booking #{{ booking.booking_id }}
+            </h2>
+
+            <p>
+                <strong>User:</strong>
+                {{ booking.full_name }}
+            </p>
+
+            <p>
+                <strong>Email:</strong>
+                {{ booking.email }}
+            </p>
+
+            <p>
+                <strong>Package:</strong>
+                {{ booking.title }}
+            </p>
+
+            <p>
+                <strong>Destination:</strong>
+                {{ booking.destination }}
+            </p>
+
+            <p>
+                <strong>Travel Date:</strong>
+                {{ booking.travel_date }}
+            </p>
+
+            <p>
+                <strong>Adults:</strong>
+                {{ booking.adults }}
+            </p>
+
+            <p>
+                <strong>Children:</strong>
+                {{ booking.children }}
+            </p>
+
+            <p>
+                <strong>Room:</strong>
+                {{ booking.room_type }}
+            </p>
+
+            <p>
+                <strong>Total:</strong>
+                ₹{{ booking.total_amount }}
+            </p>
+
+            <p>
+                <strong>Booking Status:</strong>
+                {{ booking.booking_status }}
+            </p>
+
+            <p>
+                <strong>Payment Status:</strong>
+                {{ booking.payment_status }}
+            </p>
+
+            <hr>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>No bookings found.</p>
+
+    {% endif %}
+
+    <br>
+
+    <a href="/admin/dashboard">
+        Back to Dashboard
+    </a>
+
+</body>
+</html>

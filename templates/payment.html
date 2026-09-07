@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TravelMate - Payment</title>
+</head>
+
+<body>
+
+    <h1>TravelMate Payment</h1>
+
+    <hr>
+
+    <h2>{{ booking["title"] }}</h2>
+
+    <p>
+        <b>Booking ID:</b>
+        {{ booking["booking_id"] }}
+    </p>
+
+    <p>
+        <b>Amount:</b>
+        ₹ {{ booking["total_amount"] }}
+    </p>
+
+    <button id="pay-button">
+        Pay ₹ {{ booking["total_amount"] }}
+    </button>
+
+    <!-- Razorpay Checkout Script -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <script>
+
+        document.getElementById("pay-button").onclick = function () {
+
+            var options = {
+
+                key: "{{ razorpay_key_id }}",
+
+                amount: "{{ amount }}",
+
+                currency: "INR",
+
+                name: "TravelMate",
+
+                description: "Tour Package Booking",
+
+                order_id: "{{ razorpay_order_id }}",
+
+                handler: function (response) {
+
+                    fetch("/payment-success", {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            razorpay_payment_id:
+                                response.razorpay_payment_id,
+
+                            razorpay_order_id:
+                                response.razorpay_order_id,
+
+                            razorpay_signature:
+                                response.razorpay_signature
+                        })
+                    })
+
+                    .then(response => response.json())
+
+                    .then(data => {
+
+                        if (data.status === "success") {
+
+                            alert("Payment Verified Successfully!");
+
+                            window.location.href =
+                                "/booking-success/" + data.booking_id;
+
+                        } else {
+
+                            alert(data.message);
+
+                        }
+
+                    })
+
+                    .catch(error => {
+
+                        console.log(error);
+
+                        alert("Something went wrong");
+
+                    });
+
+                },
+
+                theme: {
+                    color: "#3399cc"
+                }
+
+            };
+
+            var razorpay = new Razorpay(options);
+
+            razorpay.open();
+        };
+
+    </script>
+
+</body>
+</html>

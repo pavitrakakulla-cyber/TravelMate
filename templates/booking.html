@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book Tour Package</title>
+</head>
+<body>
+
+    <h1>Book Your Tour</h1>
+
+    <hr>
+
+    <h2>{{ package["title"] }}</h2>
+
+    <p>
+        <b>Destination :</b>
+        {{ package["destination"] }}
+    </p>
+
+    <p>
+        <b>Duration :</b>
+
+        {{ package["duration_days"] }}
+        Days /
+
+        {{ package["duration_nights"] }}
+        Nights
+    </p>
+
+    <p>
+        <b>Price :</b>
+
+        ₹ {{ package["base_price"] }}
+    </p>
+
+    <hr>
+
+    <form method="POST">
+
+        <label>Travel Date</label>
+
+        <br>
+
+        <input
+        type="date"
+        name="travel_date"
+        required>
+
+        <br><br>
+
+        <label>Adults</label>
+
+        <br>
+
+        <input
+        type="number"
+        name="adults"
+        value="1"
+        min="1"
+        required>
+
+        <br><br>
+
+        <label>Children</label>
+
+        <br>
+
+        <input
+        type="number"
+        name="children"
+        value="0"
+        min="0">
+
+        <br><br>
+
+        <label>Room Type</label>
+
+        <br>
+
+        <select name="room_type">
+
+            <option value="standard">
+                Standard
+            </option>
+
+            <option value="deluxe">
+                Deluxe
+            </option>
+
+            <option value="premium">
+                Premium
+            </option>
+
+        </select>
+
+        <br><br>
+
+        <input
+        type="submit"
+        value="Proceed Booking">
+
+    </form>
+
+    <br>
+
+    <a href="/packages">
+        ← Back to Packages
+    </a>
+
+</body>
+</html>

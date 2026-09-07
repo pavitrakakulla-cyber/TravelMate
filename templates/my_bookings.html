@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Bookings - TravelMate</title>
+</head>
+
+<body>
+
+    <h1>My Bookings</h1>
+
+    {% if bookings %}
+
+        {% for booking in bookings %}
+
+            <div>
+
+                <h2>{{ booking.title }}</h2>
+
+                <p>
+                    <strong>Destination:</strong>
+                    {{ booking.destination }}
+                </p>
+
+                <p>
+                    <strong>Travel Date:</strong>
+                    {{ booking.travel_date }}
+                </p>
+
+                <p>
+                    <strong>Adults:</strong>
+                    {{ booking.adults }}
+                </p>
+
+                <p>
+                    <strong>Children:</strong>
+                    {{ booking.children }}
+                </p>
+
+                <p>
+                    <strong>Room:</strong>
+                    {{ booking.room_type }}
+                </p>
+
+                <p>
+                    <strong>Total:</strong>
+                    ₹{{ booking.total_amount }}
+                </p>
+
+                <p>
+                    <strong>Booking Status:</strong>
+                    {{ booking.booking_status }}
+                </p>
+
+                <p>
+                    <strong>Payment Status:</strong>
+                    {{ booking.payment_status or "Not Paid" }}
+                </p>
+
+                <br>
+
+                <!-- View Details -->
+                <a href="/booking-details/{{ booking.booking_id }}">
+                    View Details
+                </a>
+
+                <br><br>
+
+
+                <!-- Pending Booking -->
+                {% if booking.booking_status == "pending" %}
+
+                    {% if booking.payment_status != "paid" %}
+
+                        <a href="/payment/{{ booking.booking_id }}">
+                            Pay Now
+                        </a>
+
+                        <br><br>
+
+                    {% endif %}
+
+
+                    <form
+                        action="/cancel-booking/{{ booking.booking_id }}"
+                        method="POST"
+                        style="display:inline;"
+                    >
+
+                        <button type="submit">
+                            Cancel Booking
+                        </button>
+
+                    </form>
+
+
+                <!-- Confirmed Booking -->
+                {% elif booking.booking_status == "confirmed" %}
+
+                    {% if booking.payment_status == "paid" %}
+
+                        <br><br>
+
+                        <form
+                            action="/cancel-booking/{{ booking.booking_id }}"
+                            method="POST"
+                            style="display:inline;"
+                        >
+
+                            <button type="submit">
+                                Cancel & Refund
+                            </button>
+
+                        </form>
+
+                    {% endif %}
+
+
+                <!-- Cancelled Booking -->
+                {% elif booking.booking_status == "cancelled" %}
+
+                    <p>
+                        <strong>Booking Cancelled</strong>
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+            <hr>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>No bookings found.</p>
+
+    {% endif %}
+
+
+    <br>
+
+    <a href="/">
+        Back to Home
+    </a>
+
+</body>
+</html>

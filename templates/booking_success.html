@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Booking Successful</title>
+</head>
+<body>
+
+<h1>🎉 Booking Confirmed</h1>
+
+<hr>
+
+<p><b>Booking ID :</b> {{ booking["booking_id"] }}</p>
+
+<p><b>Package :</b> {{ booking["title"] }}</p>
+
+<p><b>Destination :</b> {{ booking["destination"] }}</p>
+
+<p><b>Travel Date :</b> {{ booking["travel_date"] }}</p>
+
+<p><b>Adults :</b> {{ booking["adults"] }}</p>
+
+<p><b>Children :</b> {{ booking["children"] }}</p>
+
+<p><b>Room Type :</b> {{ booking["room_type"] }}</p>
+
+<h2>Total Amount : ₹ {{ booking["total_amount"] }}</h2>
+
+<br>
+
+
+<a href="/payment/{{ booking['booking_id'] }}">
+    Proceed to Payment
+</a>
+
+<br><br>
+
+<a href="/packages">
+    Back to Packages
+</a>
+
+</body>
+</html>

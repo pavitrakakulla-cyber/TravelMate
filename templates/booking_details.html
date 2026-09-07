@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Booking Details - TravelMate</title>
+</head>
+
+<body>
+
+    <h1>Booking Details</h1>
+
+    <hr>
+
+    <h2>{{ booking.title }}</h2>
+
+    <p>
+        <strong>Booking ID:</strong>
+        {{ booking.booking_id }}
+    </p>
+
+    <p>
+        <strong>Destination:</strong>
+        {{ booking.destination }}
+    </p>
+
+    <p>
+        <strong>Travel Date:</strong>
+        {{ booking.travel_date }}
+    </p>
+
+    <p>
+        <strong>Adults:</strong>
+        {{ booking.adults }}
+    </p>
+
+    <p>
+        <strong>Children:</strong>
+        {{ booking.children }}
+    </p>
+
+    <p>
+        <strong>Room Type:</strong>
+        {{ booking.room_type }}
+    </p>
+
+    <hr>
+
+    <h3>Price Details</h3>
+
+    <p>
+        Base Amount:
+        ₹{{ booking.base_amount }}
+    </p>
+
+    <p>
+        Additional Charges:
+        ₹{{ booking.additional_charges }}
+    </p>
+
+    <p>
+        Discount:
+        ₹{{ booking.discount_amount }}
+    </p>
+
+    <h3>
+        Total Amount:
+        ₹{{ booking.total_amount }}
+    </h3>
+
+    <hr>
+
+    <h3>Booking Status</h3>
+
+    <p>
+        {{ booking.booking_status }}
+    </p>
+
+    <h3>Payment Status</h3>
+
+    <p>
+        {{ booking.payment_status }}
+    </p>
+
+    {% if booking.razorpay_payment_id %}
+
+        <p>
+            <strong>Razorpay Payment ID:</strong>
+            {{ booking.razorpay_payment_id }}
+        </p>
+
+    {% endif %}
+
+    <br>
+
+    <a href="/my-bookings">
+        Back to My Bookings
+    </a>
+
+</body>
+</html>

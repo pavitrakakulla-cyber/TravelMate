@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin - Payments</title>
+</head>
+
+<body>
+
+    <h1>All Payments</h1>
+
+    <a href="/admin/dashboard">
+        Back to Dashboard
+    </a>
+
+    <hr>
+
+    {% if payments %}
+
+        {% for payment in payments %}
+
+            <h2>Payment #{{ payment.payment_id }}</h2>
+
+            <p>
+                <strong>Booking ID:</strong>
+                {{ payment.booking_id }}
+            </p>
+
+            <p>
+                <strong>User:</strong>
+                {{ payment.full_name }}
+            </p>
+
+            <p>
+                <strong>Package:</strong>
+                {{ payment.title }}
+            </p>
+
+            <p>
+                <strong>Amount:</strong>
+                ₹{{ payment.amount }}
+            </p>
+
+            <p>
+                <strong>Razorpay Order ID:</strong>
+                {{ payment.razorpay_order_id }}
+            </p>
+
+            <p>
+                <strong>Razorpay Payment ID:</strong>
+                {{ payment.razorpay_payment_id or "Not Available" }}
+            </p>
+
+            <p>
+                <strong>Payment Status:</strong>
+                {{ payment.payment_status }}
+            </p>
+
+            <p>
+                <strong>Payment Method:</strong>
+                {{ payment.payment_method or "Not Available" }}
+            </p>
+
+            <p>
+                <strong>Created At:</strong>
+                {{ payment.created_at }}
+            </p>
+
+            <p>
+                <strong>Updated At:</strong>
+                {{ payment.updated_at }}
+            </p>
+
+            <hr>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>No payments found.</p>
+
+    {% endif %}
+
+</body>
+</html>
