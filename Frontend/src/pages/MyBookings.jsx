@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -37,7 +38,6 @@ function MyBookings() {
       }
 
       setBookings(data.bookings || []);
-
     } catch (err) {
       console.error("Bookings Error:", err);
       setError(err.message);
@@ -88,14 +88,12 @@ function MyBookings() {
       );
 
       await fetchBookings();
-
     } catch (err) {
       console.error("Cancel Booking Error:", err);
 
       alert(
         err.message || "Unable to cancel booking."
       );
-
     } finally {
       setCancellingId(null);
     }
@@ -122,9 +120,22 @@ function MyBookings() {
   if (loading) {
     return (
       <main className="my-bookings-page">
-        <div className="bookings-container">
-          <h1>My Bookings</h1>
-          <p>Loading your bookings...</p>
+        <div className="bookings-loading">
+
+          <div className="loading-plane">
+            ✈️
+          </div>
+
+          <h2>Loading your journeys...</h2>
+
+          <p>
+            Please wait while we fetch your bookings.
+          </p>
+
+          <div className="loading-bar">
+            <span></span>
+          </div>
+
         </div>
       </main>
     );
@@ -137,19 +148,23 @@ function MyBookings() {
   if (error) {
     return (
       <main className="my-bookings-page">
-        <div className="bookings-container">
-          <h1>My Bookings</h1>
 
-          <div className="booking-error">
-            <h3>Unable to load bookings</h3>
+        <div className="booking-error">
 
-            <p>{error}</p>
-
-            <button onClick={fetchBookings}>
-              Try Again
-            </button>
+          <div className="error-icon">
+            ⚠️
           </div>
+
+          <h2>Unable to load bookings</h2>
+
+          <p>{error}</p>
+
+          <button onClick={fetchBookings}>
+            Try Again
+          </button>
+
         </div>
+
       </main>
     );
   }
@@ -163,25 +178,127 @@ function MyBookings() {
 
       <div className="bookings-container">
 
-        {/* HEADER */}
+        {/* PAGE HEADER */}
         <div className="bookings-header">
 
-          <div>
-            <h1>My Bookings</h1>
+          <div className="bookings-title-section">
 
-            <p>
-              View and manage your TravelMate bookings.
-            </p>
+            <div className="bookings-title-icon">
+              ✈️
+            </div>
+
+            <div>
+              <span className="bookings-eyebrow">
+                YOUR TRAVEL JOURNEY
+              </span>
+
+              <h1>My Bookings</h1>
+
+              <p>
+                View and manage all your TravelMate journeys.
+              </p>
+            </div>
+
           </div>
 
           <button
             className="home-button"
             onClick={() => navigate("/user-home")}
           >
+            <span>←</span>
             Back to Home
           </button>
 
         </div>
+
+
+        {/* BOOKING SUMMARY */}
+        {bookings.length > 0 && (
+
+          <div className="booking-summary">
+
+            <div className="summary-box">
+
+              <div className="summary-icon">
+                🧳
+              </div>
+
+              <div>
+                <span>Total Bookings</span>
+                <strong>{bookings.length}</strong>
+              </div>
+
+            </div>
+
+
+            <div className="summary-box">
+
+              <div className="summary-icon">
+                ✅
+              </div>
+
+              <div>
+                <span>Confirmed</span>
+
+                <strong>
+                  {
+                    bookings.filter(
+                      (b) =>
+                        b.booking_status === "confirmed"
+                    ).length
+                  }
+                </strong>
+              </div>
+
+            </div>
+
+
+            <div className="summary-box">
+
+              <div className="summary-icon">
+                ⏳
+              </div>
+
+              <div>
+                <span>Pending</span>
+
+                <strong>
+                  {
+                    bookings.filter(
+                      (b) =>
+                        b.booking_status === "pending"
+                    ).length
+                  }
+                </strong>
+              </div>
+
+            </div>
+
+
+            <div className="summary-box">
+
+              <div className="summary-icon">
+                ❌
+              </div>
+
+              <div>
+                <span>Cancelled</span>
+
+                <strong>
+                  {
+                    bookings.filter(
+                      (b) =>
+                        b.booking_status === "cancelled"
+                    ).length
+                  }
+                </strong>
+              </div>
+
+            </div>
+
+          </div>
+
+        )}
 
 
         {/* NO BOOKINGS */}
@@ -189,20 +306,26 @@ function MyBookings() {
 
           <div className="no-bookings">
 
-            <div className="empty-icon">
+            <div className="empty-illustration">
               ✈️
             </div>
+
+            <span className="empty-label">
+              START YOUR JOURNEY
+            </span>
 
             <h2>No bookings yet</h2>
 
             <p>
               You haven't made any travel bookings yet.
+              Discover your next adventure with TravelMate.
             </p>
 
             <button
               onClick={() => navigate("/packages")}
             >
               Explore Packages
+              <span>→</span>
             </button>
 
           </div>
@@ -215,79 +338,110 @@ function MyBookings() {
             {bookings.map((booking) => (
 
               <div
-                className="booking-card"
+                className={`booking-card ${
+                  booking.booking_status === "cancelled"
+                    ? "booking-cancelled"
+                    : ""
+                }`}
                 key={booking.booking_id}
               >
 
-                {/* CARD HEADER */}
+                {/* CARD TOP */}
                 <div className="booking-card-header">
 
-                  <div>
+                  <div className="booking-main-info">
 
-                    <h2>
-                      {booking.title}
-                    </h2>
+                    <div className="destination-icon">
+                      🌍
+                    </div>
 
-                    <span className="booking-id">
-                      Booking ID #{booking.booking_id}
-                    </span>
+                    <div>
+
+                      <h2>
+                        {booking.title}
+                      </h2>
+
+                      <span className="booking-id">
+                        Booking ID #{booking.booking_id}
+                      </span>
+
+                    </div>
 
                   </div>
+
 
                   <span
                     className={`booking-status ${booking.booking_status}`}
                   >
+                    <span className="status-dot"></span>
                     {booking.booking_status}
                   </span>
 
                 </div>
 
 
-                {/* BOOKING DETAILS */}
+                {/* TRAVEL DETAILS */}
                 <div className="booking-details">
 
                   <div className="detail-item">
-                    <span>Travel Date</span>
 
-                    <strong>
-                      {formatDate(booking.travel_date)}
-                    </strong>
+                    <span className="detail-icon">
+                      📅
+                    </span>
+
+                    <div>
+                      <span>Travel Date</span>
+
+                      <strong>
+                        {formatDate(booking.travel_date)}
+                      </strong>
+                    </div>
+
                   </div>
 
 
                   <div className="detail-item">
-                    <span>Adults</span>
 
-                    <strong>
-                      {booking.adults}
-                    </strong>
+                    <span className="detail-icon">
+                      👨‍👩‍👧
+                    </span>
+
+                    <div>
+                      <span>Guests</span>
+
+                      <strong>
+                        {booking.adults} Adults
+                        {Number(booking.children) > 0 &&
+                          ` • ${booking.children} Children`}
+                      </strong>
+                    </div>
+
                   </div>
 
 
                   <div className="detail-item">
-                    <span>Children</span>
 
-                    <strong>
-                      {booking.children}
-                    </strong>
-                  </div>
+                    <span className="detail-icon">
+                      🛏️
+                    </span>
 
+                    <div>
+                      <span>Room Type</span>
 
-                  <div className="detail-item">
-                    <span>Room Type</span>
+                      <strong>
+                        {booking.room_type}
+                      </strong>
+                    </div>
 
-                    <strong>
-                      {booking.room_type}
-                    </strong>
                   </div>
 
                 </div>
 
 
-                {/* PAYMENT DETAILS */}
+                {/* PAYMENT SECTION */}
                 <div className="booking-payment">
 
-                  <div>
+                  <div className="amount-section">
 
                     <span>Total Amount</span>
 
@@ -301,7 +455,7 @@ function MyBookings() {
                   </div>
 
 
-                  <div>
+                  <div className="payment-info">
 
                     <span>Payment</span>
 
@@ -320,7 +474,7 @@ function MyBookings() {
                   </div>
 
 
-                  <div>
+                  <div className="payment-info">
 
                     <span>Method</span>
 
@@ -337,6 +491,7 @@ function MyBookings() {
                 <div className="booking-actions">
 
                   <button
+                    className="view-booking-btn"
                     onClick={() =>
                       navigate(
                         `/booking-success/${booking.booking_id}`
@@ -344,6 +499,7 @@ function MyBookings() {
                     }
                   >
                     View Booking
+                    <span>→</span>
                   </button>
 
 
@@ -375,7 +531,15 @@ function MyBookings() {
                 {booking.payment_status === "refunded" && (
 
                   <div className="refund-message">
-                    💰 Refund has been processed for this booking.
+                    <span>💰</span>
+
+                    <div>
+                      <strong>Refund Processed</strong>
+                      <p>
+                        Your refund has been processed for
+                        this booking.
+                      </p>
+                    </div>
                   </div>
 
                 )}
@@ -386,7 +550,16 @@ function MyBookings() {
                   booking.payment_status !== "refunded" && (
 
                     <div className="cancelled-message">
-                      ❌ This booking has been cancelled.
+
+                      <span>❌</span>
+
+                      <div>
+                        <strong>Booking Cancelled</strong>
+                        <p>
+                          This booking has been cancelled.
+                        </p>
+                      </div>
+
                     </div>
 
                 )}
@@ -406,3 +579,4 @@ function MyBookings() {
 }
 
 export default MyBookings;
+

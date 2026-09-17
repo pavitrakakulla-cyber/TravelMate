@@ -120,25 +120,41 @@ function Booking() {
 
   if (loading) {
     return (
-      <div className="booking-page">
-        <h2>Loading booking...</h2>
-      </div>
+      <main className="booking-page">
+        <div className="booking-loading">
+          <div className="booking-spinner"></div>
+          <h2>Preparing your trip...</h2>
+          <p>Please wait while we load your package.</p>
+        </div>
+      </main>
     );
   }
 
   if (error && !pkg) {
     return (
-      <div className="booking-page">
-        <h2>{error}</h2>
-      </div>
+      <main className="booking-page">
+        <div className="booking-error-page">
+          <div>😕</div>
+          <h2>{error}</h2>
+          <button onClick={() => navigate("/packages")}>
+            ← Back to Packages
+          </button>
+        </div>
+      </main>
     );
   }
 
   if (!pkg) {
     return (
-      <div className="booking-page">
-        <h2>Package not found.</h2>
-      </div>
+      <main className="booking-page">
+        <div className="booking-error-page">
+          <div>😕</div>
+          <h2>Package not found.</h2>
+          <button onClick={() => navigate("/packages")}>
+            ← Back to Packages
+          </button>
+        </div>
+      </main>
     );
   }
 
@@ -147,48 +163,125 @@ function Booking() {
 
       <div className="booking-container">
 
+        {/* Header */}
         <div className="booking-header">
-          <p>TRAVELMATE</p>
+
+          <div className="booking-brand">
+            <span className="brand-icon">✈</span>
+            <span>TRAVELMATE</span>
+          </div>
+
+          <p className="booking-eyebrow">
+            YOUR JOURNEY STARTS HERE
+          </p>
 
           <h1>Complete Your Booking</h1>
 
-          <span>
-            Plan your perfect trip with us.
-          </span>
+          <p className="booking-subtitle">
+            Plan your perfect trip and create unforgettable memories.
+          </p>
+
         </div>
 
+        {/* Main Grid */}
         <div className="booking-grid">
 
-          {/* Package Summary */}
+          {/* LEFT - Package Preview */}
           <section className="booking-package">
 
-            <img
-              src={pkg.image_url}
-              alt={pkg.title}
-            />
+            <div className="package-image-wrapper">
 
-            <div>
-              <span>📍 {pkg.destination}</span>
+              <img
+                src={pkg.image_url}
+                alt={pkg.title}
+              />
+
+              <div className="package-image-overlay"></div>
+
+              <span className="package-location">
+                📍 {pkg.destination}
+              </span>
+
+              <span className="package-tag">
+                ✨ Popular Choice
+              </span>
+
+            </div>
+
+            <div className="package-preview-content">
+
+              <p className="package-mini-label">
+                TRAVELMATE EXPERIENCE
+              </p>
 
               <h2>{pkg.title}</h2>
 
-              <p>
-                {pkg.duration_days} Days •{" "}
-                {pkg.duration_nights} Nights
-              </p>
+              <div className="package-duration">
+                <span>🗓️</span>
+                <span>
+                  {pkg.duration_days} Days
+                </span>
 
-              <strong>
-                ₹
-                {price.toLocaleString("en-IN")}
-              </strong>
+                <i>•</i>
+
+                <span>🌙</span>
+                <span>
+                  {pkg.duration_nights} Nights
+                </span>
+              </div>
+
+              <div className="package-price">
+
+                <div>
+                  <small>Starting from</small>
+
+                  <strong>
+                    ₹{price.toLocaleString("en-IN")}
+                  </strong>
+                </div>
+
+                <span>per package</span>
+
+              </div>
+
+              <div className="package-benefits">
+
+                <div>
+                  <span>✓</span>
+                  Easy booking process
+                </div>
+
+                <div>
+                  <span>✓</span>
+                  Secure payment
+                </div>
+
+                <div>
+                  <span>✓</span>
+                  Memorable travel experience
+                </div>
+
+              </div>
+
             </div>
 
           </section>
 
-          {/* Booking Form */}
+          {/* RIGHT - Booking Form */}
           <section className="booking-form-card">
 
-            <h2>Booking Details</h2>
+            <div className="form-card-header">
+
+              <div className="form-title-icon">
+                🧳
+              </div>
+
+              <div>
+                <h2>Booking Details</h2>
+                <p>Tell us about your trip</p>
+              </div>
+
+            </div>
 
             <form onSubmit={handleSubmit}>
 
@@ -196,6 +289,7 @@ function Booking() {
               <div className="form-group">
 
                 <label>
+                  <span>📅</span>
                   Travel Date
                 </label>
 
@@ -215,180 +309,329 @@ function Booking() {
 
               </div>
 
-              {/* Adults */}
-              <div className="form-group">
+              {/* Guests */}
+              <div className="guest-row">
 
-                <label>
-                  Adults
-                </label>
+                <div className="form-group">
 
-                <input
-                  type="number"
-                  min="1"
-                  value={adults}
-                  onChange={(e) =>
-                    setAdults(
-                      Math.max(
-                        1,
-                        Number(e.target.value)
-                      )
-                    )
-                  }
-                  required
-                />
+                  <label>
+                    <span>👨</span>
+                    Adults
+                  </label>
+
+                  <div className="number-input">
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setAdults(
+                          Math.max(1, Number(adults) - 1)
+                        )
+                      }
+                    >
+                      −
+                    </button>
+
+                    <input
+                      type="number"
+                      min="1"
+                      value={adults}
+                      onChange={(e) =>
+                        setAdults(
+                          Math.max(
+                            1,
+                            Number(e.target.value)
+                          )
+                        )
+                      }
+                      required
+                    />
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setAdults(Number(adults) + 1)
+                      }
+                    >
+                      +
+                    </button>
+
+                  </div>
+
+                </div>
+
+                <div className="form-group">
+
+                  <label>
+                    <span>👧</span>
+                    Children
+                  </label>
+
+                  <div className="number-input">
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setChildren(
+                          Math.max(
+                            0,
+                            Number(children) - 1
+                          )
+                        )
+                      }
+                    >
+                      −
+                    </button>
+
+                    <input
+                      type="number"
+                      min="0"
+                      value={children}
+                      onChange={(e) =>
+                        setChildren(
+                          Math.max(
+                            0,
+                            Number(e.target.value)
+                          )
+                        )
+                      }
+                    />
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setChildren(Number(children) + 1)
+                      }
+                    >
+                      +
+                    </button>
+
+                  </div>
+
+                </div>
 
               </div>
 
-              {/* Children */}
+              <p className="children-note">
+                💡 Children are charged at 50% of the adult price.
+              </p>
+
+              {/* Room Type */}
               <div className="form-group">
 
                 <label>
-                  Children
+                  <span>🛏️</span>
+                  Choose Room Type
                 </label>
 
-                <input
-                  type="number"
-                  min="0"
-                  value={children}
-                  onChange={(e) =>
-                    setChildren(
-                      Math.max(
-                        0,
-                        Number(e.target.value)
-                      )
-                    )
-                  }
-                />
+                <div className="room-options">
 
-                <small>
-                  Children are charged at 50% of
-                  adult price.
-                </small>
+                  <label
+                    className={`room-option ${
+                      roomType === "standard"
+                        ? "selected"
+                        : ""
+                    }`}
+                  >
 
-              </div>
+                    <input
+                      type="radio"
+                      name="room"
+                      value="standard"
+                      checked={roomType === "standard"}
+                      onChange={(e) =>
+                        setRoomType(e.target.value)
+                      }
+                    />
 
-              {/* Room */}
-              <div className="form-group">
+                    <div className="room-option-content">
+                      <strong>Standard</strong>
+                      <small>Included</small>
+                    </div>
 
-                <label>
-                  Room Type
-                </label>
+                    <span className="room-check">✓</span>
 
-                <select
-                  value={roomType}
-                  onChange={(e) =>
-                    setRoomType(e.target.value)
-                  }
-                >
-                  <option value="standard">
-                    Standard — ₹0
-                  </option>
+                  </label>
 
-                  <option value="deluxe">
-                    Deluxe — ₹2,000
-                  </option>
+                  <label
+                    className={`room-option ${
+                      roomType === "deluxe"
+                        ? "selected"
+                        : ""
+                    }`}
+                  >
 
-                  <option value="premium">
-                    Premium — ₹5,000
-                  </option>
-                </select>
+                    <input
+                      type="radio"
+                      name="room"
+                      value="deluxe"
+                      checked={roomType === "deluxe"}
+                      onChange={(e) =>
+                        setRoomType(e.target.value)
+                      }
+                    />
+
+                    <div className="room-option-content">
+                      <strong>Deluxe</strong>
+                      <small>+ ₹2,000</small>
+                    </div>
+
+                    <span className="room-check">✓</span>
+
+                  </label>
+
+                  <label
+                    className={`room-option ${
+                      roomType === "premium"
+                        ? "selected"
+                        : ""
+                    }`}
+                  >
+
+                    <input
+                      type="radio"
+                      name="room"
+                      value="premium"
+                      checked={roomType === "premium"}
+                      onChange={(e) =>
+                        setRoomType(e.target.value)
+                      }
+                    />
+
+                    <div className="room-option-content">
+                      <strong>Premium</strong>
+                      <small>+ ₹5,000</small>
+                    </div>
+
+                    <span className="room-check">✓</span>
+
+                  </label>
+
+                </div>
 
               </div>
 
               {/* Error */}
               {error && (
-                <p className="booking-error">
-                  {error}
-                </p>
+                <div className="booking-error">
+                  ⚠️ {error}
+                </div>
               )}
 
               {/* Price Summary */}
               <div className="price-summary">
 
-                <h3>Price Summary</h3>
+                <div className="summary-header">
+                  <div>
+                    <span className="summary-icon">💰</span>
+                    <h3>Price Summary</h3>
+                  </div>
+                </div>
 
-                <div>
+                <div className="summary-row">
                   <span>
                     Adult Amount
+                    <small>
+                      {adults} adult{adults > 1 ? "s" : ""}
+                    </small>
                   </span>
 
                   <strong>
-                    ₹
-                    {adultAmount.toLocaleString(
-                      "en-IN"
-                    )}
+                    ₹{adultAmount.toLocaleString("en-IN")}
                   </strong>
                 </div>
 
-                <div>
+                <div className="summary-row">
                   <span>
                     Children Amount
+                    <small>
+                      {children} child{children !== 1 ? "ren" : ""}
+                    </small>
                   </span>
 
                   <strong>
-                    ₹
-                    {childAmount.toLocaleString(
-                      "en-IN"
-                    )}
+                    ₹{childAmount.toLocaleString("en-IN")}
                   </strong>
                 </div>
 
-                <div>
+                <div className="summary-row">
                   <span>
                     Room Charges
+                    <small>
+                      {roomType.charAt(0).toUpperCase() +
+                        roomType.slice(1)}
+                    </small>
                   </span>
 
                   <strong>
-                    ₹
-                    {additionalCharges.toLocaleString(
-                      "en-IN"
-                    )}
+                    ₹{additionalCharges.toLocaleString("en-IN")}
                   </strong>
                 </div>
 
                 {discountAmount > 0 && (
-                  <div>
+                  <div className="summary-row discount-row">
                     <span>
-                      Discount
+                      🎉 Group Discount
+                      <small>10% discount</small>
                     </span>
 
                     <strong>
-                      - ₹
-                      {discountAmount.toLocaleString(
-                        "en-IN"
-                      )}
+                      - ₹{discountAmount.toLocaleString("en-IN")}
                     </strong>
                   </div>
                 )}
 
-                <hr />
+                <div className="summary-divider"></div>
 
                 <div className="total-row">
 
-                  <span>
-                    Total Amount
-                  </span>
+                  <div>
+                    <span>Total Amount</span>
+                    <small>Final booking amount</small>
+                  </div>
 
                   <strong>
-                    ₹
-                    {totalAmount.toLocaleString(
-                      "en-IN"
-                    )}
+                    ₹{totalAmount.toLocaleString("en-IN")}
                   </strong>
 
                 </div>
 
               </div>
 
+              {/* Confirm Button */}
               <button
                 type="submit"
                 disabled={submitting}
                 className="confirm-booking-button"
               >
-                {submitting
-                  ? "Creating Booking..."
-                  : "Confirm Booking"}
+
+                {submitting ? (
+                  <>
+                    <span className="button-spinner"></span>
+                    Creating Booking...
+                  </>
+                ) : (
+                  <>
+                    <span>✓</span>
+                    Confirm Booking
+                    <span className="confirm-arrow">→</span>
+                  </>
+                )}
+
               </button>
+
+              <div className="secure-booking">
+
+                <span>🔒</span>
+
+                <div>
+                  <strong>Safe & Secure Booking</strong>
+                  <small>
+                    Your booking information is protected.
+                  </small>
+                </div>
+
+              </div>
 
             </form>
 

@@ -1,3 +1,4 @@
+
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -57,7 +58,6 @@ function Payment() {
       }
 
       setPaymentData(data);
-
     } catch (err) {
       console.error("Payment Error:", err);
       setError(err.message || "Unable to create payment");
@@ -150,7 +150,6 @@ function Payment() {
                 "Payment verification failed"
             );
           }
-
         } catch (err) {
           console.error(
             "❌ Verification Error:",
@@ -173,7 +172,7 @@ function Payment() {
       },
 
       theme: {
-        color: "#0d6efd",
+        color: "#2563eb",
       },
 
       modal: {
@@ -205,7 +204,6 @@ function Payment() {
       );
 
       razorpay.open();
-
     } catch (err) {
       console.error(
         "❌ Razorpay Error:",
@@ -221,118 +219,274 @@ function Payment() {
     }
   };
 
-  // Loading
+  // ================= LOADING =================
+
   if (loading) {
     return (
-      <div className="payment-page">
-        <div className="payment-card">
-          <h2>Preparing Payment...</h2>
-          <p>Please wait while we prepare your payment.</p>
+      <main className="payment-page">
+        <div className="payment-loading-card">
+
+          <div className="payment-loading-icon">
+            💳
+          </div>
+
+          <div className="payment-spinner"></div>
+
+          <h2>Preparing Your Payment</h2>
+
+          <p>
+            Please wait while we securely prepare
+            your payment.
+          </p>
+
         </div>
-      </div>
+      </main>
     );
   }
 
-  // Error
+  // ================= ERROR =================
+
   if (error) {
     return (
-      <div className="payment-page">
-        <div className="payment-card">
+      <main className="payment-page">
+        <div className="payment-error-card">
 
-          <div className="payment-icon">
-            ❌
+          <div className="payment-error-icon">
+            !
           </div>
 
-          <h2>Payment Error</h2>
+          <div className="payment-error-label">
+            PAYMENT ISSUE
+          </div>
+
+          <h2>Payment Could Not Be Started</h2>
 
           <p className="payment-error">
             {error}
           </p>
 
           <button
+            className="payment-back-button"
             onClick={() => navigate("/user-home")}
           >
-            Back to Home
+            ← Back to Home
           </button>
 
         </div>
-      </div>
+      </main>
     );
   }
 
-  // No payment data
+  // ================= NO PAYMENT DATA =================
+
   if (!paymentData) {
     return (
-      <div className="payment-page">
-        <div className="payment-card">
-          <h2>Unable to load payment</h2>
+      <main className="payment-page">
+        <div className="payment-error-card">
+
+          <div className="payment-error-icon">
+            ?
+          </div>
+
+          <h2>Unable to Load Payment</h2>
+
+          <p>
+            We couldn't prepare the payment details
+            for this booking.
+          </p>
 
           <button
+            className="payment-back-button"
             onClick={() => navigate("/user-home")}
           >
-            Back to Home
+            ← Back to Home
           </button>
+
         </div>
-      </div>
+      </main>
     );
   }
+
+  // ================= MAIN PAYMENT PAGE =================
+
+  const amount = Number(
+    paymentData.amount_rupees
+  ).toLocaleString("en-IN");
 
   return (
     <main className="payment-page">
 
-      <div className="payment-card">
+      <div className="payment-wrapper">
 
-        <div className="payment-icon">
-          💳
-        </div>
+        {/* Top Heading */}
 
-        <h1>Complete Payment</h1>
+        <div className="payment-heading">
 
-        <p>
-          Secure your TravelMate booking.
-        </p>
-
-        <div className="payment-details">
-
-          <div>
-            <span>Booking ID</span>
-            <strong>
-              #{bookingId}
-            </strong>
+          <div className="payment-heading-icon">
+            💳
           </div>
 
-          <div>
-            <span>Package</span>
-
-            <strong>
-              {paymentData.title}
-            </strong>
+          <div className="payment-label">
+            SECURE CHECKOUT
           </div>
 
-          <div>
-            <span>Amount</span>
+          <h1>Complete Your Payment</h1>
 
-            <strong>
-              ₹
-              {Number(
-                paymentData.amount_rupees
-              ).toLocaleString("en-IN")}
-            </strong>
-          </div>
+          <p>
+            Secure your TravelMate booking and
+            get ready for your next adventure.
+          </p>
 
         </div>
 
-        <button
-          className="pay-now-button"
-          onClick={handlePayment}
-          disabled={processing}
-        >
-          {processing
-            ? "Processing..."
-            : `Pay ₹${Number(
-                paymentData.amount_rupees
-              ).toLocaleString("en-IN")}`}
-        </button>
+        {/* Main Card */}
+
+        <div className="payment-card">
+
+          {/* Booking Header */}
+
+          <div className="payment-booking-header">
+
+            <div>
+              <span>BOOKING ID</span>
+
+              <strong>
+                #{bookingId}
+              </strong>
+            </div>
+
+            <div className="payment-secure-badge">
+              🔒 SECURE
+            </div>
+
+          </div>
+
+          {/* Package */}
+
+          <div className="payment-package">
+
+            <div className="payment-package-icon">
+              ✈️
+            </div>
+
+            <div className="payment-package-info">
+
+              <span>TRAVEL PACKAGE</span>
+
+              <h2>
+                {paymentData.title}
+              </h2>
+
+              <p>
+                Your selected TravelMate package
+              </p>
+
+            </div>
+
+          </div>
+
+          {/* Amount */}
+
+          <div className="payment-amount-box">
+
+            <div>
+              <span>AMOUNT TO PAY</span>
+
+              <small>
+                Secure payment via Razorpay
+              </small>
+            </div>
+
+            <strong>
+              ₹{amount}
+            </strong>
+
+          </div>
+
+          {/* Payment Info */}
+
+          <div className="payment-info-grid">
+
+            <div className="payment-info-item">
+
+              <div className="payment-info-icon">
+                🔐
+              </div>
+
+              <div>
+                <strong>Secure Payment</strong>
+                <span>
+                  Your transaction is protected
+                </span>
+              </div>
+
+            </div>
+
+            <div className="payment-info-item">
+
+              <div className="payment-info-icon">
+                ⚡
+              </div>
+
+              <div>
+                <strong>Instant Confirmation</strong>
+                <span>
+                  Booking confirmed after payment
+                </span>
+              </div>
+
+            </div>
+
+          </div>
+
+          {/* Pay Button */}
+
+          <button
+            className="payment-pay-button"
+            onClick={handlePayment}
+            disabled={processing}
+          >
+            {processing ? (
+              <>
+                <span className="button-spinner"></span>
+                Processing Payment...
+              </>
+            ) : (
+              <>
+                <span>💳</span>
+                Pay ₹{amount}
+                <span className="payment-arrow">
+                  →
+                </span>
+              </>
+            )}
+          </button>
+
+          {/* Back */}
+
+          <button
+            className="payment-back-button"
+            onClick={() => navigate("/user-home")}
+            disabled={processing}
+          >
+            ← Back to Home
+          </button>
+
+          {/* Footer */}
+
+          <div className="payment-footer">
+
+            <span>🔒</span>
+
+            <p>
+              Payments are securely processed by
+              Razorpay. TravelMate does not store
+              your card details.
+            </p>
+
+          </div>
+
+        </div>
 
       </div>
 
@@ -341,4 +495,3 @@ function Payment() {
 }
 
 export default Payment;
-

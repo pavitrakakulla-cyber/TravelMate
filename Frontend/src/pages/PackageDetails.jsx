@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import "./PackageDetails.css";
 
 function PackageDetails() {
   const { packageId } = useParams();
@@ -19,9 +20,7 @@ function PackageDetails() {
         const data = await response.json();
 
         if (!response.ok) {
-          throw new Error(
-            data.message || "Failed to load package"
-          );
+          throw new Error(data.message || "Failed to load package");
         }
 
         setPkg(data.package);
@@ -43,8 +42,12 @@ function PackageDetails() {
   if (loading) {
     return (
       <main className="package-details-page">
-        <div className="details-loading">
-          <h2>Loading package...</h2>
+        <div className="details-container">
+          <div className="details-loading">
+            <div className="loading-spinner"></div>
+            <h2>Loading your adventure...</h2>
+            <p>Preparing package details for you</p>
+          </div>
         </div>
       </main>
     );
@@ -53,12 +56,16 @@ function PackageDetails() {
   if (error || !pkg) {
     return (
       <main className="package-details-page">
-        <div className="details-error">
-          <h2>{error || "Package not found."}</h2>
+        <div className="details-container">
+          <div className="details-error">
+            <div className="error-icon">😕</div>
+            <h2>{error || "Package not found."}</h2>
+            <p>We couldn't find the travel package you're looking for.</p>
 
-          <Link to="/packages">
-            ← Back to Packages
-          </Link>
+            <Link to="/packages" className="error-back-button">
+              ← Back to Packages
+            </Link>
+          </div>
         </div>
       </main>
     );
@@ -67,20 +74,17 @@ function PackageDetails() {
   return (
     <main className="package-details-page">
 
-      {/* Back */}
       <div className="details-container">
 
-        <Link
-          to="/packages"
-          className="back-link"
-        >
-          ← Back to Packages
+        {/* Back Navigation */}
+        <Link to="/packages" className="back-link">
+          <span>←</span> Back to Packages
         </Link>
 
-        {/* Main Details */}
+        {/* Main Hero Card */}
         <section className="package-details-card">
 
-          {/* Image */}
+          {/* Image Section */}
           <div className="details-image">
 
             <img
@@ -88,17 +92,24 @@ function PackageDetails() {
               alt={pkg.title}
             />
 
-            <span className="details-destination">
-              📍 {pkg.destination}
-            </span>
+            <div className="image-overlay"></div>
+
+            <div className="destination-badge">
+              <span>📍</span>
+              {pkg.destination}
+            </div>
+
+            <div className="experience-badge">
+              ✨ TravelMate Experience
+            </div>
 
           </div>
 
-          {/* Content */}
+          {/* Content Section */}
           <div className="details-content">
 
             <p className="details-label">
-              TRAVELMATE EXPERIENCE
+              EXPLORE • EXPERIENCE • ENJOY
             </p>
 
             <h1>{pkg.title}</h1>
@@ -107,15 +118,14 @@ function PackageDetails() {
               {pkg.description}
             </p>
 
-            {/* Duration */}
+            {/* Package Information */}
             <div className="details-info">
 
               <div className="info-box">
-                <span>🗓️</span>
+                <div className="info-icon">🗓️</div>
 
                 <div>
                   <small>Duration</small>
-
                   <strong>
                     {pkg.duration_days} Days
                   </strong>
@@ -123,11 +133,10 @@ function PackageDetails() {
               </div>
 
               <div className="info-box">
-                <span>🌙</span>
+                <div className="info-icon">🌙</div>
 
                 <div>
-                  <small>Nights</small>
-
+                  <small>Stay</small>
                   <strong>
                     {pkg.duration_nights} Nights
                   </strong>
@@ -135,11 +144,10 @@ function PackageDetails() {
               </div>
 
               <div className="info-box">
-                <span>📍</span>
+                <div className="info-icon">📍</div>
 
                 <div>
                   <small>Destination</small>
-
                   <strong>
                     {pkg.destination}
                   </strong>
@@ -148,21 +156,18 @@ function PackageDetails() {
 
             </div>
 
-            {/* Price */}
+            {/* Price Area */}
             <div className="details-price">
 
-              <div>
-                <small>Starting from</small>
+              <div className="price-main">
+                <span>Starting from</span>
 
                 <strong>
-                  ₹
-                  {Number(pkg.base_price).toLocaleString(
-                    "en-IN"
-                  )}
+                  ₹{Number(pkg.base_price).toLocaleString("en-IN")}
                 </strong>
               </div>
 
-              <span>
+              <span className="price-note">
                 per package
               </span>
 
@@ -176,7 +181,9 @@ function PackageDetails() {
                 className="book-button"
                 onClick={handleBookNow}
               >
-                🧳 Book Now
+                <span>🧳</span>
+                Book Now
+                <span className="button-arrow">→</span>
               </button>
 
               <button
@@ -186,11 +193,60 @@ function PackageDetails() {
                   alert("Wishlist feature coming soon!")
                 }
               >
-                ❤️ Wishlist
+                <span>♡</span>
+                Wishlist
               </button>
 
             </div>
 
+            {/* Trust Text */}
+            <div className="booking-trust">
+              <div className="trust-item">
+                <span>🔒</span>
+                <div>
+                  <strong>Secure Booking</strong>
+                  <small>Your information is protected</small>
+                </div>
+              </div>
+
+              <div className="trust-item">
+                <span>✓</span>
+                <div>
+                  <strong>Easy Booking</strong>
+                  <small>Quick & simple reservation</small>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </section>
+
+        {/* Bottom Highlights */}
+        <section className="travel-highlights">
+
+          <div className="highlight-card">
+            <div className="highlight-icon">🏝️</div>
+            <div>
+              <h3>Beautiful Destinations</h3>
+              <p>Discover amazing places with TravelMate.</p>
+            </div>
+          </div>
+
+          <div className="highlight-card">
+            <div className="highlight-icon">⭐</div>
+            <div>
+              <h3>Memorable Experiences</h3>
+              <p>Create unforgettable travel memories.</p>
+            </div>
+          </div>
+
+          <div className="highlight-card">
+            <div className="highlight-icon">💳</div>
+            <div>
+              <h3>Easy & Secure Payment</h3>
+              <p>Book your trip with a simple checkout.</p>
+            </div>
           </div>
 
         </section>
@@ -202,3 +258,5 @@ function PackageDetails() {
 }
 
 export default PackageDetails;
+
+

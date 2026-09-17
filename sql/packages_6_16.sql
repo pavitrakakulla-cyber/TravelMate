@@ -1,0 +1,14 @@
+INSERT INTO `packages`
+(`package_id`, `title`, `destination`, `description`, `duration_days`, `duration_nights`, `base_price`, `image_url`, `is_active`, `created_at`, `updated_at`)
+VALUES
+(6, 'Kashmir Paradise Tour', 'Kashmir', 'Explore beautiful valleys, lakes and snow-covered mountains of Kashmir.', 6, 5, 35000.00, 'https://images.unsplash.com/photo-1595815771614-ade9d652a65d', 1, '2026-08-25 17:22:07', '2026-08-25 17:22:07'),
+(7, 'Rajasthan Heritage Tour', 'Rajasthan', 'Experience royal palaces, forts, culture and traditional Rajasthan.', 6, 5, 28000.00, 'https://images.unsplash.com/photo-1599661046289-e31897846e62', 1, '2026-08-25 17:22:07', '2026-08-25 17:22:07'),
+(8, 'Ooty Hills Tour', 'Ooty', 'Enjoy beautiful hills, tea gardens, lakes and pleasant weather in Ooty.', 4, 3, 14000.00, 'https://images.unsplash.com/photo-1593693397690-362cb9666fc2', 1, '2026-08-25 17:22:07', '2026-08-25 17:22:07'),
+(9, 'Darjeeling Escape', 'Darjeeling', 'Discover tea gardens, mountain views and the beautiful Himalayan landscape.', 5, 4, 22000.00, 'https://images.unsplash.com/photo-1544735716-392fe2489ffa', 0, '2026-08-25 17:22:07', '2026-08-31 12:45:12'),
+(10, 'Coorg Nature Retreat', 'Coorg', 'Relax among coffee plantations, waterfalls and the green hills of Coorg.', 4, 3, 16000.00, 'https://images.unsplash.com/photo-1605640840605-14ac1855827b', 1, '2026-08-25 17:22:07', '2026-08-25 17:22:07'),
+(11, 'Andaman Island Tour', 'Andaman', 'Enjoy crystal-clear beaches, island adventures and beautiful marine life.', 6, 5, 38000.00, 'https://images.unsplash.com/photo-1581793745862-99fde7fa73d2', 1, '2026-08-25 17:22:07', '2026-08-25 17:22:07'),
+(12, 'Pondicherry Getaway', 'Pondicherry', 'Experience peaceful beaches, French architecture and coastal culture.', 3, 2, 10000.00, 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220', 1, '2026-08-25 17:22:07', '2026-08-25 17:22:07'),
+(13, 'Rishikesh Adventure Tour', 'Rishikesh', 'Enjoy river rafting, adventure activities and peaceful mountain views.', 4, 3, 15000.00, 'https://images.unsplash.com/photo-1597074866923-dc0589150358', 0, '2026-08-25 17:22:07', '2026-09-01 10:52:32'),
+(14, 'Munnar Hills Tour', 'Munnar', 'Explore tea plantations, waterfalls and scenic mountain landscapes.', 4, 3, 13500.00, 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944', 0, '2026-08-25 17:22:07', '2026-08-31 12:44:47'),
+(15, 'Udaipur Royal Escape', 'Udaipur', 'Discover beautiful lakes, royal palaces and the heritage of Udaipur.', 4, 3, 19000.00, 'https://images.unsplash.com/photo-1477587458883-47145ed94245', 0, '2026-08-25 17:22:07', '2026-08-31 00:25:27'),
+(16, 'aagra', 'taz mahal', 'its a worlds 7th wonder', 9, 10, 10000.00, 'https://pixabay.com/images/search/taj%20mahal/', 0, '2026-08-31 12:48:22', '2026-09-01 11:19:54');
