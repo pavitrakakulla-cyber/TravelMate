@@ -14,7 +14,7 @@ function PackageDetails() {
     const fetchPackage = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/packages/${packageId}`
+          `/api/packages/${packageId}`
         );
 
         const data = await response.json();

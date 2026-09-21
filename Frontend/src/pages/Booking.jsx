@@ -20,7 +20,7 @@ function Booking() {
     const loadPackage = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/packages/${packageId}`
+          `/api/packages/${packageId}`
         );
 
         const data = await response.json();
@@ -78,7 +78,7 @@ function Booking() {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/booking",
+        "/api/booking",
         {
           method: "POST",
 
@@ -192,7 +192,7 @@ function Booking() {
             <div className="package-image-wrapper">
 
               <img
-                src={pkg.image_url}
+                src={"/images/" + pkg.image_url}
                 alt={pkg.title}
               />
 

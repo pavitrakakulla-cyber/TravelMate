@@ -1,6 +1,10 @@
 .env
 __pycache__/
 *.pyc
-Frontend/node_modules
+venv/
+*.log
+app.py.backup
+app.py.before-payment-fix
+Frontend/node_modules/
+Frontend/dist/
 TravelMate_Frontend_Styled.zip
-TravelMate_Frontend_Styled

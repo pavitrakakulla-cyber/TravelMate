@@ -15,7 +15,7 @@ function AdminPayments() {
       setError("");
 
       const response = await fetch(
-        "http://localhost:5000/api/admin/payments",
+        "/api/admin/payments",
         {
           method: "GET",
           credentials: "include",

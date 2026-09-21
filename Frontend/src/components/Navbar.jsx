@@ -14,7 +14,7 @@ function Navbar() {
     const checkAuth = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/auth/me",
+          "/api/auth/me",
           {
             method: "GET",
             credentials: "include",
@@ -41,7 +41,7 @@ function Navbar() {
   const handleLogout = async () => {
     try {
       const response = await fetch(
-        "http://localhost:5000/api/auth/logout",
+        "/api/auth/logout",
         {
           method: "POST",
           credentials: "include",

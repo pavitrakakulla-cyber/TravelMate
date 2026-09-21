@@ -45,7 +45,7 @@ function Login() {
       console.log("========== LOGIN REQUEST START ==========");
 
       const response = await fetch(
-        "http://localhost:5000/login",
+        "/login",
         {
           method: "POST",
           headers: {
@@ -70,7 +70,7 @@ function Login() {
 
       // Verify session
       const meResponse = await fetch(
-        "http://localhost:5000/api/auth/me",
+        "/api/auth/me",
         {
           method: "GET",
           credentials: "include",

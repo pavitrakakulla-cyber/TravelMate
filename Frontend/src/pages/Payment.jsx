@@ -37,7 +37,7 @@ function Payment() {
       setError("");
 
       const response = await fetch(
-        `http://localhost:5000/api/payment/create/${bookingId}`,
+        `/api/payment/create/${bookingId}`,
         {
           method: "POST",
           headers: {
@@ -99,7 +99,7 @@ function Payment() {
 
         try {
           const verifyResponse = await fetch(
-            "http://localhost:5000/api/payment/verify",
+            "/api/payment/verify",
             {
               method: "POST",
 

@@ -18,7 +18,7 @@ function AdminBookings() {
       setError("");
 
       const response = await fetch(
-        "http://localhost:5000/api/admin/bookings",
+        "/api/admin/bookings",
         {
           method: "GET",
           credentials: "include",

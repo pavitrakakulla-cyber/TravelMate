@@ -20,7 +20,7 @@ function MyBookings() {
       setError("");
 
       const response = await fetch(
-        "http://localhost:5000/api/bookings",
+        "/api/bookings",
         {
           method: "GET",
           credentials: "include",
@@ -63,7 +63,7 @@ function MyBookings() {
       setCancellingId(bookingId);
 
       const response = await fetch(
-        `http://localhost:5000/api/booking/${bookingId}/cancel`,
+        `/api/booking/${bookingId}/cancel`,
         {
           method: "POST",
           credentials: "include",

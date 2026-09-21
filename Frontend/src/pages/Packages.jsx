@@ -15,7 +15,7 @@ function Packages() {
   const checkAuthentication = async () => {
     try {
       const authResponse = await fetch(
-        "http://localhost:5000/api/auth/me",
+        "/api/auth/me",
         {
           method: "GET",
           credentials: "include",
@@ -55,7 +55,7 @@ function Packages() {
       setError("");
 
       const response = await fetch(
-        "http://localhost:5000/api/packages",
+        "/api/packages",
         {
           method: "GET",
           credentials: "include",
@@ -192,7 +192,7 @@ setPackages(data.packages || []);
                 <div className="package-image">
 
                   <img
-                    src={pkg.image_url}
+                    src={pkg.image_url.startsWith("http") ? pkg.image_url : "/images/" + pkg.image_url}
                     alt={pkg.title}
                     onError={(e) => {
                       e.currentTarget.style.display = "none";

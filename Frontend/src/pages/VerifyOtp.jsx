@@ -24,7 +24,7 @@ function VerifyOTP() {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/auth/verify-otp",
+        "/api/auth/verify-otp",
         {
           method: "POST",
           headers: {

@@ -14,7 +14,7 @@ function BookingSuccess() {
     const loadBooking = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/booking/${bookingId}`,
+          `/api/booking/${bookingId}`,
           {
             credentials: "include",
           }

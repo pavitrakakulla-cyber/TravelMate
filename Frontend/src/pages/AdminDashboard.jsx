@@ -18,7 +18,7 @@ function AdminDashboard() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/admin/dashboard", {
+    fetch("/api/admin/dashboard", {
       method: "GET",
       credentials: "include",
     })
@@ -75,7 +75,7 @@ function AdminDashboard() {
     try {
 
       await fetch(
-        "http://localhost:5000/admin/logout",
+        "/admin/logout",
         {
           method: "GET",
           credentials: "include",

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect,session,jsonify
+from flask import Flask, render_template, request, redirect, session, jsonify, send_from_directory
 from flask_cors import CORS
 import os
 from dotenv import load_dotenv
@@ -14,6 +14,7 @@ from datetime import datetime, timedelta
 load_dotenv()
 
 app = Flask(__name__)
+FRONTEND_DIST = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Frontend", "dist")
 
 app.secret_key = "travelmate-secret-key"
 app.config["SESSION_COOKIE_NAME"] = "travelmate_session"
@@ -99,17 +100,7 @@ TravelMate Team
         return False
 @app.route("/")
 def home():
-
-    if "user_name" in session:
-        return render_template(
-            "index.html",
-            name=session["user_name"]
-        )
-
-    return render_template(
-        "index.html",
-        name=None
-    )
+    return send_from_directory(FRONTEND_DIST, "index.html")
 @app.route("/api/auth/me", methods=["GET"])
 def auth_me():
 
@@ -242,6 +233,8 @@ def api_register():
         print("================================")
         print("REGISTER SUCCESS")
         print("EMAIL:", email)
+        conn.ping(reconnect=True, attempts=3, delay=1)
+        cursor = conn.cursor(dictionary=True)
         print("OTP:", otp)
         print("OTP EXPIRES:", expiry)
         print("================================")
@@ -363,7 +356,7 @@ def register():
 
         return redirect("/")
 
-    return render_template("register.html")
+    return send_from_directory(FRONTEND_DIST, "index.html")
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -376,6 +369,8 @@ def login():
 
         print("========== LOGIN ROUTE CALLED ==========")
         print("EMAIL:", email)
+        conn.ping(reconnect=True, attempts=3, delay=1)
+        cursor = conn.cursor(dictionary=True)
 
         cursor.execute(
             "SELECT * FROM users WHERE email=%s",
@@ -414,7 +409,7 @@ def login():
             "message": "Invalid Email or Password"
         }), 401
 
-    return render_template("login.html")
+    return send_from_directory(FRONTEND_DIST, "index.html")
 
 @app.route("/packages")
 def packages():
@@ -425,10 +420,7 @@ def packages():
 
     packages = cursor.fetchall()
 
-    return render_template(
-        "packages.html",
-        packages=packages
-    )
+    return send_from_directory(FRONTEND_DIST, "index.html")
 
 
 @app.route("/booking/<int:package_id>", methods=["GET", "POST"])
@@ -522,10 +514,8 @@ def booking(package_id):
 
         return redirect(f"/booking-success/{booking_id}")
 
-    return render_template(
-        "booking.html",
-        package=package
-    )
+    return send_from_directory(FRONTEND_DIST, "index.html")
+    
 
 @app.route("/api/booking", methods=["POST"])
 def api_create_booking():
@@ -937,6 +927,7 @@ def payment_success():
 @app.route("/api/payment/verify", methods=["POST"])
 def api_verify_payment():
 
+    cursor = conn.cursor(dictionary=True)
     if "user_id" not in session:
         return jsonify({
             "status": "failed",
@@ -1121,7 +1112,38 @@ def api_create_payment(booking_id):
                 }), 400
 
             razorpay_order_id = existing_payment["razorpay_order_id"]
-            print("USING EXISTING RAZORPAY ORDER:", razorpay_order_id)
+            print("CHECKING EXISTING RAZORPAY ORDER:", razorpay_order_id)
+
+            existing_order = client.order.fetch(razorpay_order_id)
+            print("RAZORPAY ORDER STATUS:", existing_order.get("status"))
+
+            if existing_order.get("status") == "paid":
+                return jsonify({
+                    "status": "already_paid",
+                    "message": "Payment already completed. Please refresh My Bookings.",
+                    "booking_id": booking_id
+                }), 400
+
+            if existing_order.get("status") not in ["created", "attempted"]:
+                print("OLD RAZORPAY ORDER NOT REUSABLE. CREATING NEW ORDER...")
+                order = client.order.create({
+                    "amount": amount_in_paise,
+                    "currency": "INR",
+                    "payment_capture": 1
+                })
+                razorpay_order_id = order["id"]
+
+                cursor.execute("""
+                    UPDATE payments
+                    SET razorpay_order_id=%s,
+                        razorpay_payment_id=NULL,
+                        payment_status='created',
+                        payment_method=NULL
+                    WHERE payment_id=%s
+                """, (razorpay_order_id, existing_payment["payment_id"]))
+                conn.commit()
+            else:
+                print("USING EXISTING RAZORPAY ORDER:", razorpay_order_id)
 
         else:
 
@@ -1225,10 +1247,7 @@ def my_bookings():
 
     bookings = cursor.fetchall()
 
-    return render_template(
-        "my_bookings.html",
-        bookings=bookings
-    )
+    return send_from_directory(FRONTEND_DIST, "index.html")
 @app.route("/api/bookings", methods=["GET"])
 def api_get_bookings():
 
@@ -2506,3 +2525,16 @@ def admin_logout():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+app.add_url_rule("/assets/<path:filename>", endpoint="react_assets", view_func=lambda filename: send_from_directory(os.path.join(FRONTEND_DIST,"assets"), filename))
+app.add_url_rule("/images/<path:filename>", endpoint="react_images", view_func=lambda filename: send_from_directory(os.path.join(FRONTEND_DIST,"images"), filename))
+app.add_url_rule("/favicon.svg", endpoint="react_favicon", view_func=lambda: send_from_directory(FRONTEND_DIST,"favicon.svg"))
+app.add_url_rule("/icons.svg", endpoint="react_icons", view_func=lambda: send_from_directory(FRONTEND_DIST,"icons.svg"))
+
+
+def serve_react(*args, **kwargs):
+    return send_from_directory(FRONTEND_DIST, "index.html")
+
+app.add_url_rule("/user-home", endpoint="react_user_home", view_func=serve_react)
+
+
