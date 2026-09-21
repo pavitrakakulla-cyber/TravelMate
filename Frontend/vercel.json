@@ -5,6 +5,22 @@
       "destination": "http://51.20.65.206:8000/api/:path*"
     },
     {
+      "source": "/login",
+      "destination": "http://51.20.65.206:8000/login"
+    },
+    {
+      "source": "/register",
+      "destination": "http://51.20.65.206:8000/register"
+    },
+    {
+      "source": "/admin/:path*",
+      "destination": "http://51.20.65.206:8000/admin/:path*"
+    },
+    {
+      "source": "/packages",
+      "destination": "http://51.20.65.206:8000/packages"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
